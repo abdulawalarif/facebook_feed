@@ -254,12 +254,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                   height: 6.h,
                   width: 50.w,
-                  child: Center(child: Text(
+                  child: const Center(child: Text(
                     'Confirm',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 13.sp
+
                     ),
                   ),),
                 ),

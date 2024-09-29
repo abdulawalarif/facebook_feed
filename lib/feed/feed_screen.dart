@@ -61,16 +61,16 @@ class _FeedScreenState extends State<FeedScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                 child: Text(
                   post.posts!,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w400,
-                      fontSize: 12.sp),
+                      ),
                 ),
               ),
               GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics:const  NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                 ),
                 itemCount: post.images?.length ?? 0,
@@ -78,7 +78,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: ImagePreview(
-                      imagePath: post.images?[index] ?? "",
+                      imagePath: post.images?[index] ?? '',
                       height: 190,
                       width: 190,
                     ),
@@ -146,10 +146,10 @@ class _FeedScreenState extends State<FeedScreen> {
                   child: Center(
                     child: Text(
                       post.posts!,
-                      style: TextStyle(
-                          fontSize: 23.sp,
+                      style: const TextStyle(
+
                           fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                          color: Colors.white,),
                     ),
                   ),
                 ),
@@ -212,44 +212,44 @@ class _FeedScreenState extends State<FeedScreen> {
           ),
         ),
         Gap(2.w),
-        Column(
+       const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Maskusur Rahman Rabby",
+            Text('Maskusur Rahman Rabby',
                 style: TextStyle(
-                    fontSize: 12.sp,
+
                     fontWeight: FontWeight.bold,
                     color: Colors.black)),
             Row(
-              children: [Text("1h")],
-            )
+              children: [Text('1h')],
+            ),
           ],
         ),
         Spacer(),
-        PopupMenuButton<_selectedOptionForUpdateDelete>(
+        PopupMenuButton<SelectedOptionForUpdateDelete>(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           icon: Icon(Icons.more_horiz),
           itemBuilder: (BuildContext context) => [
             const PopupMenuItem(
               child: Text("Update"),
-              value: _selectedOptionForUpdateDelete.Update,
+              value: SelectedOptionForUpdateDelete.update,
             ),
             const PopupMenuItem(
               child: Text("Delete"),
-              value: _selectedOptionForUpdateDelete.Delete,
+              value: SelectedOptionForUpdateDelete.delete,
             ),
           ],
           onSelected: (value) {
             switch (value) {
-              case _selectedOptionForUpdateDelete.Update:
+              case SelectedOptionForUpdateDelete.update:
                 Map<String, dynamic> arguments = {
                   'postModel': post,
                   'index': index,
                 };
                 Navigator.of(context).pushNamed(RoutesName.updatePostScreen,
                     arguments: arguments);
-              case _selectedOptionForUpdateDelete.Delete:
+              case SelectedOptionForUpdateDelete.delete:
                 posts.removePost(index);
                 print(posts.allPosts.length);
                 print("PostDeleted${index}");
@@ -292,9 +292,9 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 }
 
-enum _selectedOptionForUpdateDelete {
-  Update,
-  Delete,
+enum SelectedOptionForUpdateDelete {
+  update,
+  delete,
 }
 
 Widget likeCommentsWidgets() {

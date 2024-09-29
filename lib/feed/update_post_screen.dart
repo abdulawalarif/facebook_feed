@@ -79,10 +79,10 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                       color: Colors.green,
                       borderRadius: BorderRadius.circular(10)
                   ),
-                  child: Center(
-                    child: Text(" Update",style: TextStyle(
+                  child: const Center(
+                    child: Text(' Update',style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 10.sp
+
                     ),),
                   ),
                 ),
@@ -109,10 +109,10 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                   ),
                 ),
                 Gap(2.w),
-                Text(
-                  "Tom Hardy",
+                const Text(
+                  'Tom Hardy',
                   style:
-                  TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+                  TextStyle(  fontWeight: FontWeight.bold),
                 )
               ],
             ),
@@ -128,8 +128,8 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                   contentPadding:
                   EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
                   border: InputBorder.none,
-                  hintStyle: TextStyle(
-                      fontSize: 16.sp, // Set the font size for the hint
+                  hintStyle:const TextStyle(
+
                       fontWeight: FontWeight.bold,
                       color: Colors.black54
 
@@ -139,10 +139,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                 maxLines: null,
                 textAlignVertical: TextAlignVertical.center,
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 13.sp, // Set the font size for the input text
-                  // Make the input text bold
-                ),
+
 
                 onChanged: (val){
                   final lines = val.split('\n');
@@ -171,9 +168,9 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                   contentPadding:
                   EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
                   border: InputBorder.none,
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                       height: 3,
-                      fontSize: 16.sp, // Set the font size for the hint
+
                       fontWeight: FontWeight.bold,
                       color: Colors.black54
 
@@ -183,10 +180,10 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                 maxLines: 3,
                 textAlignVertical: TextAlignVertical.center,
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontSize: 16.sp, // Set the font size for the input text
+                style: const TextStyle(
+                     // Set the font size for the input text
                     fontWeight: FontWeight.bold,
-                    color: Colors.white// Make the input text bold
+                    color: Colors.white,
                 ),
                 onChanged: (val){
                   final lines = val.split('\n');

@@ -175,7 +175,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                           });
                                         },
                                         splashRadius: 18,
-                                        iconSize: 25.sp,
                                         color: Colors.black54,
                                         icon: const Icon(Icons.close),
                                       ),
@@ -189,7 +188,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                     color: _emailTextHasFocus
                                         ? Colors.black
                                         : Colors.black54,
-                                    fontSize: 14.sp,
+
                                     fontWeight: FontWeight.w400,),
                               ),
                               focusedBorder: const OutlineInputBorder(
@@ -265,7 +264,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                           });
                                         },
                                         splashRadius: 18,
-                                        iconSize: 21.sp,
+
                                         color: Colors.black54,
                                         icon: Icon(
                                           _passwordIsVisibile
@@ -283,8 +282,8 @@ class _LogInScreenState extends State<LogInScreen> {
                                     color: _passwordHasFocus
                                         ? Colors.black
                                         : Colors.black54,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400),
+
+                                    fontWeight: FontWeight.w400,),
                               ),
                               focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide.none,
@@ -327,11 +326,11 @@ class _LogInScreenState extends State<LogInScreen> {
                             Navigator.of(context)
                                 .pushNamed(RoutesName.forgotPassword);
                           },
-                          child: Text(
+                          child: const Text(
                             'Forgot password? ',
                             style: TextStyle(
                                 color: Colors.black87,
-                                fontSize: 12.sp,
+
                                 fontWeight: FontWeight.bold),
                           ),
                         ),

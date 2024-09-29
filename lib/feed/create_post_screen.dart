@@ -38,51 +38,51 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           title: const Text('Create New Post'),
           centerTitle: true,
           actions: [
-            Padding(
-              padding: EdgeInsets.only(right: 4.w, top: 1.h, bottom: 1.h),
-              child: GestureDetector(
-                onTap: () {
-                  if (_postController.text.isEmpty) {
-                    const snackBar = SnackBar(
-                      backgroundColor: Colors.black,
-                      content: Text('Nothing to post'),
-                      duration: Duration(seconds: 2),
-                    );
+            GestureDetector(
+              onTap: () {
+                if (_postController.text.isEmpty) {
+                  const snackBar = SnackBar(
+                    backgroundColor: Colors.black,
+                    content: Text('Nothing to post'),
+                    duration: Duration(seconds: 2),
+                  );
 
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } else {
-                    const snackBar = SnackBar(
-                      backgroundColor: Colors.black,
-                      content: Text('New post created'),
-                      duration: Duration(seconds: 2),
-                    );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                } else {
+                  const snackBar = SnackBar(
+                    backgroundColor: Colors.black,
+                    content: Text('New post created'),
+                    duration: Duration(seconds: 2),
+                  );
 
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    setState(() {
-                      posts.addPost(PostModel(
-                          posts: _postController.text,
-                          color: images!.isEmpty ? currentColor : Colors.white,
-                          selectedBgAsImage: bgImagePath,
-                          images: images,),);
-                    });
-                    Navigator.of(context).pop();
-                  }
-                },
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  setState(() {
+                    posts.addPost(PostModel(
+                      posts: _postController.text,
+                      color: images!.isEmpty ? currentColor : Colors.white,
+                      selectedBgAsImage: bgImagePath,
+                      images: images,),);
+                  });
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 4.w,  ),
                 child: Container(
-                  height: 2.h,
-                  width: 13.w,
+                  height: 4.h,
+                  width: 14.w,
                   decoration: BoxDecoration(
                     color: Colors.green,
                     borderRadius: BorderRadius.circular(
                       10,
                     ),
                   ),
-                  child: Center(
+                  child:const Center(
                     child: Text(
                       ' Post',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 11.sp,
+
                       ),
                     ),
                   ),
@@ -106,45 +106,40 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   ),
                 ),
                 Gap(2.w),
-                Text(
+                const  Text(
                   'Tom Hardy',
                   style:
-                      TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+                      TextStyle(  fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             Gap(1.h),
             currentColor == Colors.white
-                ? Flexible(
-                    child: TextField(
-                      autofocus: true,
-                      controller: _postController,
-                      decoration: InputDecoration(
-                        hintText: "What's on your mind?",
-                        contentPadding:
-                            EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(
-                            fontSize: 16.sp, // Set the font size for the hint
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black54,),
-                      ),
-                      maxLines: null,
-                      textAlignVertical: TextAlignVertical.center,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 13.sp, // Set the font size for the input text
-                        // Make the input text bold
-                      ),
-                      onChanged: (val) {
-                        final lines = val.split('\n');
-                        numberOfLines = lines.length;
-                        setState(() {
-                          numberOfLines = lines.length;
-                        });
-                      },
-                    ),
-                  )
+                ? TextField(
+                  autofocus: true,
+                  controller: _postController,
+                  decoration: InputDecoration(
+                    hintText: "What's on your mind?",
+                    contentPadding:
+                        EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
+                    border: InputBorder.none,
+                    hintStyle: const TextStyle(
+
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54,),
+                  ),
+                  maxLines: null,
+                  textAlignVertical: TextAlignVertical.center,
+                  textAlign: TextAlign.left,
+
+                  onChanged: (val) {
+                    final lines = val.split('\n');
+                    numberOfLines = lines.length;
+                    setState(() {
+                      numberOfLines = lines.length;
+                    });
+                  },
+                )
                 : Container(
                     height: 30.h,
                     width: double.infinity,
@@ -165,9 +160,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         contentPadding:
                             EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
                         border: InputBorder.none,
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                             height: 3,
-                            fontSize: 16.sp, // Set the font size for the hint
+                             // Set the font size for the hint
                             fontWeight: FontWeight.bold,
                             color: Colors.black54,),
                       ),
@@ -497,7 +492,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),), //this right here
             child: SizedBox(
-              height: 150,
+              height: 23.h,
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(

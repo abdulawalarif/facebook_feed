@@ -118,13 +118,13 @@ class _CommentsState extends State<Comments> {
           ),
         ),
         Gap(2.w),
-        Column(
+        const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Abdul Awal Arif',
               style: TextStyle(
-                fontSize: 12.sp,
+
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
