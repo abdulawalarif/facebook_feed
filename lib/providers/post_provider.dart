@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:facebook_feed/models/post_model.dart';
 
-class PostProvider extends ChangeNotifier{
+class PostProvider with ChangeNotifier{
    List<PostModel> _posts = [];
    List<PostModel> get allPosts => _posts;
    void addPost(PostModel post) {

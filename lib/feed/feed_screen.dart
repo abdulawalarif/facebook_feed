@@ -3,12 +3,11 @@ import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
- import 'package:facebook_feed/providers/post_provider.dart';
+import 'package:facebook_feed/providers/post_provider.dart';
 import 'package:facebook_feed/widgets/image_preview.dart';
-import 'package:facebook_feed/widgets/reactions_data.dart'
-    as data;
+import 'package:facebook_feed/widgets/reactions_data.dart' as data;
 import 'package:facebook_feed/models/post_model.dart';
- import 'package:facebook_feed/routes/routes_name.dart';
+import 'package:facebook_feed/routes/routes_name.dart';
 import 'package:facebook_feed/widgets/make_post_widget.dart';
 import 'package:facebook_feed/widgets/reactions_data.dart';
 
@@ -29,25 +28,27 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PostProvider>(builder: (context, posts, _) {
-      return Scaffold(
-        body: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemCount: posts.allPosts.length + 1,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              // The first item is FeedMakePostWidget
-              return const FeedMakePostWidget();
-            } else {
-              final post = posts.allPosts[index - 1];
-              // You can create a custom widget to display each post, e.g., PostItemWidget
-              return PostItemWidget(post: post, index: index - 1);
-            }
-          },
-        ),
-      );
-    },);
+    return Consumer<PostProvider>(
+      builder: (context, posts, _) {
+        return Scaffold(
+          body: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemCount: posts.allPosts.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                // The first item is FeedMakePostWidget
+                return const FeedMakePostWidget();
+              } else {
+                final post = posts.allPosts[index - 1];
+                // You can create a custom widget to display each post, e.g., PostItemWidget
+                return PostItemWidget(post: post, index: index - 1);
+              }
+            },
+          ),
+        );
+      },
+    );
   }
 
   Widget PostItemWidget({required PostModel post, required int index}) {
@@ -57,18 +58,21 @@ class _FeedScreenState extends State<FeedScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               usersInfFOrShowingPosts(post: post, index: index),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                child: Text(
-                  post.posts!,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400,
+              post.posts!.isEmpty
+                  ? const SizedBox()
+                  : Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                      child: Text(
+                        post.posts!,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                ),
-              ),
+                    ),
               GridView.builder(
-                physics:const  NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -76,7 +80,7 @@ class _FeedScreenState extends State<FeedScreen> {
                 itemCount: post.images?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 1),
                     child: ImagePreview(
                       imagePath: post.images?[index] ?? '',
                       height: 190,
@@ -147,9 +151,9 @@ class _FeedScreenState extends State<FeedScreen> {
                     child: Text(
                       post.posts!,
                       style: const TextStyle(
-
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -212,14 +216,12 @@ class _FeedScreenState extends State<FeedScreen> {
           ),
         ),
         Gap(2.w),
-       const Column(
+        const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Maskusur Rahman Rabby',
                 style: TextStyle(
-
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
+                    fontWeight: FontWeight.bold, color: Colors.black)),
             Row(
               children: [Text('1h')],
             ),

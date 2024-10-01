@@ -1,3 +1,4 @@
+import 'package:facebook_feed/widgets/profile_and_name.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
@@ -40,7 +41,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           actions: [
             GestureDetector(
               onTap: () {
-                if (_postController.text.isEmpty) {
+                if (_postController.text.isEmpty &&images!.isEmpty) {
                   const snackBar = SnackBar(
                     backgroundColor: Colors.black,
                     content: Text('Nothing to post'),
@@ -57,17 +58,22 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   setState(() {
-                    posts.addPost(PostModel(
-                      posts: _postController.text,
-                      color: images!.isEmpty ? currentColor : Colors.white,
-                      selectedBgAsImage: bgImagePath,
-                      images: images,),);
+                    posts.addPost(
+                      PostModel(
+                        posts: _postController.text,
+                        color: images!.isEmpty ? currentColor : Colors.white,
+                        selectedBgAsImage: bgImagePath,
+                        images: images,
+                      ),
+                    );
                   });
                   Navigator.of(context).pop();
                 }
               },
               child: Padding(
-                padding: EdgeInsets.only(right: 4.w,  ),
+                padding: EdgeInsets.only(
+                  right: 4.w,
+                ),
                 child: Container(
                   height: 4.h,
                   width: 14.w,
@@ -77,12 +83,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       10,
                     ),
                   ),
-                  child:const Center(
+                  child: const Center(
                     child: Text(
                       ' Post',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-
                       ),
                     ),
                   ),
@@ -94,52 +99,33 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         body: ListView(
           children: [
             Gap(1.h),
-            Row(
-              children: [
-                Gap(2.w),
-                ClipOval(
-                  child: Image.asset(
-                    'assets/images/avatar.jpg',
-                    width: 9.w,
-                    height: 4.h,
-                    fit: BoxFit.cover, // Adjust the fit as needed
-                  ),
-                ),
-                Gap(2.w),
-                const  Text(
-                  'Tom Hardy',
-                  style:
-                      TextStyle(  fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+            const ProfileAndName(),
             Gap(1.h),
             currentColor == Colors.white
                 ? TextField(
-                  autofocus: true,
-                  controller: _postController,
-                  decoration: InputDecoration(
-                    hintText: "What's on your mind?",
-                    contentPadding:
-                        EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
-                    border: InputBorder.none,
-                    hintStyle: const TextStyle(
-
+                    autofocus: true,
+                    controller: _postController,
+                    decoration: InputDecoration(
+                      hintText: "What's on your mind?",
+                      contentPadding:
+                          EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
+                      border: InputBorder.none,
+                      hintStyle: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.black54,),
-                  ),
-                  maxLines: null,
-                  textAlignVertical: TextAlignVertical.center,
-                  textAlign: TextAlign.left,
-
-                  onChanged: (val) {
-                    final lines = val.split('\n');
-                    numberOfLines = lines.length;
-                    setState(() {
+                        color: Colors.black54,
+                      ),
+                    ),
+                    maxLines: null,
+                    textAlignVertical: TextAlignVertical.center,
+                    textAlign: TextAlign.left,
+                    onChanged: (val) {
+                      final lines = val.split('\n');
                       numberOfLines = lines.length;
-                    });
-                  },
-                )
+                      setState(() {
+                        numberOfLines = lines.length;
+                      });
+                    },
+                  )
                 : Container(
                     height: 30.h,
                     width: double.infinity,
@@ -152,39 +138,42 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             )
                           : null,
                     ),
-                    child: TextField(
-                      autofocus: true,
-                      controller: _postController,
-                      decoration: InputDecoration(
-                        hintText: "What's on your mind?",
-                        contentPadding:
-                            EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
-                        border: InputBorder.none,
-                        hintStyle: const TextStyle(
+                    child: Center(
+                      child: TextField(
+                        autofocus: true,
+                        controller: _postController,
+                        decoration: InputDecoration(
+                          hintText: "What's on your mind?",
+                          contentPadding:
+                              EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
+                          border: InputBorder.none,
+                          hintStyle: const TextStyle(
                             height: 3,
-                             // Set the font size for the hint
+                            // Set the font size for the hint
                             fontWeight: FontWeight.bold,
-                            color: Colors.black54,),
-                      ),
-                      maxLines: 3,
-                      textAlignVertical: TextAlignVertical.center,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontSize:
-                              16.sp, // Set the font size for the input text
+                            color: Colors.black54,
+                          ),
+                        ),
+                        maxLines: 3,
+                        textAlignVertical: TextAlignVertical.center,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 16.sp, // Set the font size for the input text
                           fontWeight: FontWeight.bold,
                           color: Colors.white // Make the input text bold
-                          ,),
-                      onChanged: (val) {
-                        final lines = val.split('\n');
-                        numberOfLines = lines.length;
-                        if (numberOfLines > 3) {
-                          setState(() {
-                            currentColor = Colors.white;
-                            bgImagePath = '';
-                          });
-                        }
-                      },
+                          ,
+                        ),
+                        onChanged: (val) {
+                          final lines = val.split('\n');
+                          numberOfLines = lines.length;
+                          if (numberOfLines > 3) {
+                            setState(() {
+                              currentColor = Colors.white;
+                              bgImagePath = '';
+                            });
+                          }
+                        },
+                      ),
                     ),
                   ),
             Gap(1.h),
@@ -195,6 +184,27 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       children: [
+                        Padding(
+                          padding: EdgeInsets.all(2.w),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                currentColor = Colors.white;
+                                imageSelectedAsBackground = false;
+                                bgImagePath = '';
+                              });
+                            },
+                            child: Container(
+                              height: 3.h,
+                              width: 10.w,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black12),
+                                color: Colors.white10,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding: EdgeInsets.all(2.w),
                           child: GestureDetector(
@@ -283,8 +293,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               height: 3.h,
                               width: 10.w,
                               decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10),),
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                             ),
                           ),
                         ),
@@ -302,8 +313,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               height: 3.h,
                               width: 10.w,
                               decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(10),),
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                             ),
                           ),
                         ),
@@ -321,8 +333,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               height: 3.h,
                               width: 10.w,
                               decoration: BoxDecoration(
-                                  color: Colors.blueAccent,
-                                  borderRadius: BorderRadius.circular(10),),
+                                color: Colors.blueAccent,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                             ),
                           ),
                         ),
@@ -340,8 +353,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               height: 3.h,
                               width: 10.w,
                               decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(10),),
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                             ),
                           ),
                         ),
@@ -403,8 +417,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               height: 3.h,
                               width: 10.w,
                               decoration: BoxDecoration(
-                                  color: Colors.purple,
-                                  borderRadius: BorderRadius.circular(10),),
+                                color: Colors.purple,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                             ),
                           ),
                         ),
@@ -442,8 +457,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             height: 25,
                             width: 25,
                             decoration: BoxDecoration(
-                                color: Colors.black45,
-                                borderRadius: BorderRadius.circular(20),),
+                              color: Colors.black45,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                             child: const Center(
                               child: Icon(
                                 Icons.close,
@@ -457,8 +473,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   ),
                 );
               },
-            )
-          ,],
+            ),
+          ],
         ),
         bottomSheet: SizedBox(
           child: Row(
@@ -484,100 +500,112 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
   }
 
-  Future selectImage() {
+  selectImage() {
     return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),), //this right here
-            child: SizedBox(
-              height: 23.h,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Select Image From !',
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold,),
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ), //this right here
+          child: SizedBox(
+            height: 25.h,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Select Image From !',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            String selectedImagePathProfile =
-                                await selectImageFromGallery();
-                            if (selectedImagePathProfile != '') {
-                              Navigator.pop(context);
-                              setState(() {
-                                images!.add(selectedImagePathProfile);
-                              });
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
+                  ),
+                  Gap(1.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          String selectedImagePathProfile =
+                              await selectImageFromGallery();
+                          if (selectedImagePathProfile != '') {
+                            Navigator.pop(context);
+                            setState(() {
+                              images!.add(selectedImagePathProfile);
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
                                 content: Text('No Image Selected !'),
-                              ),);
-                            }
-                          },
-                          child: Card(
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/gallery.png',
-                                    height: 60,
-                                    width: 60,
-                                  ),
-                                  const Text('Gallery'),
-                                ],
                               ),
+                            );
+                          }
+                        },
+                        child: Card(
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/images/gallery.png',
+                                  height: 60,
+                                  width: 60,
+                                ),
+                                const Text('Gallery'),
+                              ],
                             ),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () async {
-                            String selectedImagePathProfile =
-                                await selectImageFromCamera();
-                            if (selectedImagePathProfile != '') {
-                              Navigator.pop(context);
-                              setState(() {
-                                images!.add(selectedImagePathProfile);
-                              });
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
+                      ),
+                      Gap(5.w),
+                      GestureDetector(
+                        onTap: () async {
+                          String selectedImagePathProfile =
+                              await selectImageFromCamera();
+                          if (selectedImagePathProfile != '') {
+                            Navigator.pop(context);
+                            setState(() {
+                              images!.add(selectedImagePathProfile);
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
                                 content: Text('No Image Captured !'),
-                              ),);
-                            }
-                          },
-                          child: Card(
-                              elevation: 5,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/camera.png',
-                                      height: 60,
-                                      width: 60,
-                                    ),
-                                    const Text('Camera'),
-                                  ],
+                              ),
+                            );
+                          }
+                        },
+                        child: Card(
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/images/camera.png',
+                                  height: 60,
+                                  width: 60,
                                 ),
-                              ),),
+                                const Text('Camera'),
+                              ],
+                            ),
+                          ),
                         ),
-                      ],
-                    )
-                  ,],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          );
-        },);
+          ),
+        );
+      },
+    );
   }
 
   selectImageFromGallery() async {
