@@ -41,7 +41,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           actions: [
             GestureDetector(
               onTap: () {
-                if (_postController.text.isEmpty &&images!.isEmpty) {
+                if (_postController.text.isEmpty && images!.isEmpty) {
                   const snackBar = SnackBar(
                     backgroundColor: Colors.black,
                     content: Text('Nothing to post'),
@@ -158,7 +158,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         textAlignVertical: TextAlignVertical.center,
                         textAlign: TextAlign.left,
                         style: TextStyle(
-                          fontSize: 16.sp, // Set the font size for the input text
+                          fontSize:
+                              16.sp, // Set the font size for the input text
                           fontWeight: FontWeight.bold,
                           color: Colors.white // Make the input text bold
                           ,
@@ -177,7 +178,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                   ),
             Gap(1.h),
-            numberOfLines < 4
+            numberOfLines < 4 && !images!.isNotEmpty
                 ? SizedBox(
                     height: 6.h,
                     child: ListView(
@@ -536,6 +537,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             Navigator.pop(context);
                             setState(() {
                               images!.add(selectedImagePathProfile);
+                              if (images!.isNotEmpty) {
+                                currentColor = Colors.white;
+                              }
                             });
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -571,6 +575,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             Navigator.pop(context);
                             setState(() {
                               images!.add(selectedImagePathProfile);
+                              if (images!.isNotEmpty) {
+                                currentColor = Colors.white;
+                              }
                             });
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
