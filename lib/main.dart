@@ -18,18 +18,19 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return Sizer(builder: (context, orientation, deviceType) {
-      return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => PostProvider()),
-        ],
-        child: const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          initialRoute: RoutesName.logInScreen,
-          onGenerateRoute: Routes.generatedRoute,
-        ),
-      );
-    },);
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => PostProvider()),
+          ],
+          child: const MaterialApp(
+            debugShowCheckedModeBanner: false,
+            initialRoute: RoutesName.logInScreen,
+            onGenerateRoute: Routes.generatedRoute,
+          ),
+        );
+      },
+    );
   }
 }
-

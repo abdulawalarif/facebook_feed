@@ -1,3 +1,4 @@
+import 'package:facebook_feed/widgets/image_on_feed_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:gap/gap.dart';
@@ -71,24 +72,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         ),
                       ),
                     ),
-              GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                itemCount: post.images?.length ?? 0,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 1),
-                    child: ImagePreview(
-                      imagePath: post.images?[index] ?? '',
-                      height: 190,
-                      width: 190,
-                    ),
-                  );
-                },
-              ),
+              ImageOnFeedScreen(listOfImages: post.images,),
               Container(
                 height: 55,
                 padding:

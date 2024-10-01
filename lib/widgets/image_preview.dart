@@ -9,26 +9,33 @@ class ImagePreview extends StatelessWidget {
   final String imagePath;
   final double width;
   final double height;
-  const ImagePreview(
-      {Key? key, this.imagePath = '', this.width = 100, this.height = 100})
-      : super(key: key);
+  const ImagePreview({
+    Key? key,
+    this.imagePath = '',
+    this.width = 100,
+    this.height = 100,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+
       height: height,
       width: width,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: Colors.grey[300]!, width: 2),
         color: Colors.grey[200],
         image: imagePath.isNotEmpty && !kIsWeb
             ? DecorationImage(
-                image: FileImage(File(imagePath)), fit: BoxFit.cover)
+                image: FileImage(File(imagePath)),
+                fit: BoxFit.cover,
+              )
             : imagePath.isNotEmpty && kIsWeb
                 ? DecorationImage(
-                    image: NetworkImage(imagePath), fit: BoxFit.cover)
+                    image: NetworkImage(imagePath),
+                    fit: BoxFit.cover,
+                  )
                 : null,
       ),
     );
