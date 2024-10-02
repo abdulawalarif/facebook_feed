@@ -47,8 +47,8 @@ class CircularProfilePicture extends StatelessWidget {
     return ClipOval(
       child: CachedNetworkImage(
         imageUrl: url,
-        width: 9.w,
-        height: 4.h,
+        width: 11.w,
+        height: 5.h,
         fit: BoxFit.cover,
         placeholder: (context, url) => Shimmer.fromColors(
           baseColor: Colors.grey.shade300,

@@ -1,11 +1,11 @@
 import 'package:facebook_feed/widgets/image_on_feed_screen.dart';
+import 'package:facebook_feed/widgets/profile_and_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:facebook_feed/providers/post_provider.dart';
-import 'package:facebook_feed/widgets/image_preview.dart';
 import 'package:facebook_feed/widgets/reactions_data.dart' as data;
 import 'package:facebook_feed/models/post_model.dart';
 import 'package:facebook_feed/routes/routes_name.dart';
@@ -72,7 +72,9 @@ class _FeedScreenState extends State<FeedScreen> {
                         ),
                       ),
                     ),
-              ImageOnFeedScreen(listOfImages: post.images,),
+              ImageOnFeedScreen(
+                listOfImages: post.images,
+              ),
               Container(
                 height: 55,
                 padding:
@@ -191,19 +193,14 @@ class _FeedScreenState extends State<FeedScreen> {
     final posts = Provider.of<PostProvider>(context, listen: false);
     return Row(
       children: [
-        ClipOval(
-          child: Image.asset(
-            'assets/images/avatar.jpg',
-            width: 9.w,
-            height: 4.h,
-            fit: BoxFit.cover, // Adjust the fit as needed
-          ),
+        CircularProfilePicture(
+          url: 'https://avatar.iran.liara.run/public',
         ),
         Gap(2.w),
         const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Maskusur Rahman Rabby',
+            Text('Ronald',
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: Colors.black)),
             Row(
@@ -211,19 +208,19 @@ class _FeedScreenState extends State<FeedScreen> {
             ),
           ],
         ),
-        Spacer(),
+        const Spacer(),
         PopupMenuButton<SelectedOptionForUpdateDelete>(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
-          icon: Icon(Icons.more_horiz),
+          icon: const Icon(Icons.more_horiz),
           itemBuilder: (BuildContext context) => [
             const PopupMenuItem(
-              child: Text("Update"),
               value: SelectedOptionForUpdateDelete.update,
+              child: Text('Update'),
             ),
             const PopupMenuItem(
-              child: Text("Delete"),
               value: SelectedOptionForUpdateDelete.delete,
+              child: Text('Delete'),
             ),
           ],
           onSelected: (value) {
@@ -237,8 +234,6 @@ class _FeedScreenState extends State<FeedScreen> {
                     arguments: arguments);
               case SelectedOptionForUpdateDelete.delete:
                 posts.removePost(index);
-                print(posts.allPosts.length);
-                print("PostDeleted${index}");
             }
           },
         )
@@ -256,14 +251,14 @@ class _FeedScreenState extends State<FeedScreen> {
         Navigator.of(context)
             .pushNamed(RoutesName.comments, arguments: arguments);
       },
-      child: Row(
+      child: const Row(
         children: [
           Icon(
             Icons.message,
             size: 16,
             color: Colors.black87,
           ),
-          const SizedBox(width: 5),
+          SizedBox(width: 5),
           Text(
             'Comment',
             style: TextStyle(
@@ -293,13 +288,13 @@ Widget likeCommentsWidgets() {
           padding: EdgeInsets.symmetric(horizontal: 2.w),
           child: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.thumb_up_alt_outlined,
                 color: Colors.black87,
               ),
               Gap(2.w),
-              Text(
-                "Like",
+              const Text(
+                'Like',
                 style: TextStyle(color: Colors.black87),
               )
             ],
@@ -311,15 +306,15 @@ Widget likeCommentsWidgets() {
         padding: EdgeInsets.symmetric(horizontal: 2.w),
         child: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.chat_bubble_outline,
               color: Colors.black87,
             ),
             Gap(2.w),
-            Text(
-              "Comments",
+            const Text(
+              'Comments',
               style: TextStyle(color: Colors.black87),
-            )
+            ),
           ],
         ),
       ),

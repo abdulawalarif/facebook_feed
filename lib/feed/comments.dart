@@ -5,6 +5,8 @@ import 'package:sizer/sizer.dart';
 import 'package:facebook_feed/models/post_model.dart';
 import 'package:facebook_feed/providers/post_provider.dart';
 
+import '../widgets/profile_and_name.dart';
+
 class Comments extends StatefulWidget {
   final int index;
   PostModel postModel;
@@ -59,8 +61,8 @@ class _CommentsState extends State<Comments> {
                         individualComments[index] ?? '',
                         style: const TextStyle(),
                       ),
-                    )
-                  ,],
+                    ),
+                  ],
                 ),
               );
             },
@@ -75,7 +77,9 @@ class _CommentsState extends State<Comments> {
                     child: TextField(
                       controller: comment,
                       decoration: const InputDecoration(
-                          hintText: 'Type your comment here',),
+                        hintText: 'Type your comment here',
+                        border: InputBorder.none,
+                      ),
                     ),
                   ),
                 ),
@@ -85,14 +89,15 @@ class _CommentsState extends State<Comments> {
                       comments.add(comment.text);
                     });
                     posts.updatePost(
-                        widget.index,
-                        PostModel(
-                            posts: widget.postModel.posts,
-                            color: widget.postModel.color,
-                            selectedBgAsImage:
-                                widget.postModel.selectedBgAsImage,
-                            images: widget.postModel.images,
-                            comments: comments,),);
+                      widget.index,
+                      PostModel(
+                        posts: widget.postModel.posts,
+                        color: widget.postModel.color,
+                        selectedBgAsImage: widget.postModel.selectedBgAsImage,
+                        images: widget.postModel.images,
+                        comments: comments,
+                      ),
+                    );
                     comment.clear();
                   },
                   child: const Icon(Icons.send),
@@ -109,13 +114,8 @@ class _CommentsState extends State<Comments> {
     final posts = Provider.of<PostProvider>(context, listen: false);
     return Row(
       children: [
-        ClipOval(
-          child: Image.asset(
-            'assets/images/avatar.jpg',
-            width: 9.w,
-            height: 4.h,
-            fit: BoxFit.cover, // Adjust the fit as needed
-          ),
+        CircularProfilePicture(
+          url: 'https://avatar.iran.liara.run/public',
         ),
         Gap(2.w),
         const Column(
@@ -124,20 +124,20 @@ class _CommentsState extends State<Comments> {
             Text(
               'Abdul Awal Arif',
               style: TextStyle(
-
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
-            const Row(
+            Row(
               children: [Text('1h')],
-            )
-          ,],
+            ),
+          ],
         ),
         const Spacer(),
         PopupMenuButton<SelectedOptionForUpdateDelete>(
           shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15.0)),),
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+          ),
           icon: const Icon(Icons.more_horiz),
           itemBuilder: (BuildContext context) => [
             const PopupMenuItem(

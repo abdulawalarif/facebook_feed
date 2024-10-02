@@ -1,4 +1,5 @@
 import 'package:facebook_feed/widgets/profile_and_name.dart';
+import 'package:facebook_feed/widgets/textField_for_post.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,6 +19,7 @@ class CreatePostScreen extends StatefulWidget {
 class _CreatePostScreenState extends State<CreatePostScreen> {
   Color currentColor = Colors.white;
   late TextEditingController _postController;
+  late FocusNode _postFocusNode;
   int numberOfLines = 1;
   String bgImagePath = '';
   bool imageSelectedAsBackground = false;
@@ -26,7 +28,22 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   void initState() {
     super.initState();
     _postController = TextEditingController();
+    _postFocusNode = FocusNode();
     images = [];
+    _postFocusNode.addListener(() {
+      final lines = _postController.text.toString().split('\n');
+      numberOfLines = lines.length;
+
+      numberOfLines = lines.length;
+
+      if (numberOfLines > 4){
+        currentColor == Colors.white;
+      }
+          setState(() {
+
+          });
+
+    });
   }
 
   @override
@@ -102,30 +119,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             const ProfileAndName(),
             Gap(1.h),
             currentColor == Colors.white
-                ? TextField(
-                    autofocus: true,
-                    controller: _postController,
-                    decoration: InputDecoration(
-                      hintText: "What's on your mind?",
-                      contentPadding:
-                          EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
-                      border: InputBorder.none,
-                      hintStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    maxLines: null,
-                    textAlignVertical: TextAlignVertical.center,
-                    textAlign: TextAlign.left,
-                    onChanged: (val) {
-                      final lines = val.split('\n');
-                      numberOfLines = lines.length;
-                      setState(() {
-                        numberOfLines = lines.length;
-                      });
-                    },
-                  )
+                ? TextFieldForPostWhiteBG(postController: _postController,postFocusNode: _postFocusNode,)
                 : Container(
                     height: 30.h,
                     width: double.infinity,
@@ -139,46 +133,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           : null,
                     ),
                     child: Center(
-                      child: TextField(
-                        autofocus: true,
-                        controller: _postController,
-                        decoration: InputDecoration(
-                          hintText: "What's on your mind?",
-                          contentPadding:
-                              EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
-                          border: InputBorder.none,
-                          hintStyle: const TextStyle(
-                            height: 3,
-                            // Set the font size for the hint
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        maxLines: 3,
-                        textAlignVertical: TextAlignVertical.center,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize:
-                              16.sp, // Set the font size for the input text
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white // Make the input text bold
-                          ,
-                        ),
-                        onChanged: (val) {
-                          final lines = val.split('\n');
-                          numberOfLines = lines.length;
-                          if (numberOfLines > 3) {
-                            setState(() {
-                              currentColor = Colors.white;
-                              bgImagePath = '';
-                            });
-                          }
-                        },
-                      ),
+                   child:  TextFieldForPostWithBG(postController: _postController,postFocusNode: _postFocusNode,),
+
                     ),
                   ),
             Gap(1.h),
-            numberOfLines < 4 && !images!.isNotEmpty
+            numberOfLines < 4 && images!.isEmpty
                 ? SizedBox(
                     height: 6.h,
                     child: ListView(
@@ -635,3 +595,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     }
   }
 }
+
+
+
+
+
+
+
+
