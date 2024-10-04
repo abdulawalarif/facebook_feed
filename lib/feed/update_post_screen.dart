@@ -72,7 +72,9 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                             color:
                                 images!.isEmpty ? currentColor : Colors.white,
                             selectedBgAsImage: bgImagePath,
-                            images: images));
+                            images: images,
+                            comments: widget.postModel.comments,
+                        ),);
                   });
                   Navigator.of(context).pop();
                 }
@@ -222,7 +224,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                               decoration: BoxDecoration(
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
+                                image: const DecorationImage(
                                   image:
                                       AssetImage('assets/images/bg_image2.jpg'),
                                   fit: BoxFit.cover,
@@ -249,7 +251,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                               decoration: BoxDecoration(
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
+                                image:const DecorationImage(
                                   image: AssetImage('assets/images/img5.jpg'),
                                   fit: BoxFit.cover,
                                 ),
@@ -275,7 +277,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                               decoration: BoxDecoration(
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
+                                image: const DecorationImage(
                                   image:
                                       AssetImage('assets/images/bg_image1.jpg'),
                                   fit: BoxFit.cover,
@@ -420,11 +422,11 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                       ],
                     ),
                   )
-                : SizedBox(),
+                : const SizedBox(),
             GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
               itemCount: images?.length ?? 0,
@@ -525,7 +527,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
-                                content: Text("No Image Selected !"),
+                                content: Text('No Image Selected !'),
                               ));
                             }
                           },
@@ -557,7 +559,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
-                                content: Text("No Image Captured !"),
+                                content: Text('No Image Captured !'),
                               ));
                             }
                           },

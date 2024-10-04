@@ -30,7 +30,7 @@ class FeedMakePostWidget extends StatelessWidget {
             ),
             Gap(2.w),
             _buildPostTextField(context),
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(12.0),
               child: Icon(
                 FontAwesomeIcons.solidImages,
@@ -49,11 +49,10 @@ class FeedMakePostWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: Color.fromARGB(255, 159, 159, 159)),
+          border: Border.all(color: const Color.fromARGB(255, 159, 159, 159)),
         ),
         child: const Text('What\'s on your mind?'),
       ),
     );
   }
 }
-

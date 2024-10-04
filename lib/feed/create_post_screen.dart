@@ -30,25 +30,39 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     _postController = TextEditingController();
     _postFocusNode = FocusNode();
     images = [];
-    _postFocusNode.addListener(() {
-      final lines = _postController.text.toString().split('\n');
-      numberOfLines = lines.length;
-
-      numberOfLines = lines.length;
-
-      if (numberOfLines > 4){
-        currentColor == Colors.white;
-      }
-          setState(() {
-
-          });
-
+    _postController.addListener(_updateLineCount);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _postFocusNode.requestFocus();
     });
   }
 
   @override
+  void dispose() {
+    _postController.removeListener(_updateLineCount);
+    _postController.dispose();
+    _postFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _updateLineCount() {
+    final text = _postController.text;
+    final lines = text.split('\n').length;
+    setState(() {
+      numberOfLines = lines;
+      if (numberOfLines > 4) {
+        currentColor = Colors.white;
+        imageSelectedAsBackground = false;
+        bgImagePath = '';
+      }
+    });
+  }
+
+  bool isActive = false;
+
+  @override
   Widget build(BuildContext context) {
     final posts = Provider.of<PostProvider>(context, listen: false);
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -119,7 +133,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             const ProfileAndName(),
             Gap(1.h),
             currentColor == Colors.white
-                ? TextFieldForPostWhiteBG(postController: _postController,postFocusNode: _postFocusNode,)
+                ? TextFieldForPostWhiteBG(
+                    postController: _postController,
+                    postFocusNode: _postFocusNode,
+                  )
                 : Container(
                     height: 30.h,
                     width: double.infinity,
@@ -133,12 +150,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           : null,
                     ),
                     child: Center(
-                   child:  TextFieldForPostWithBG(postController: _postController,postFocusNode: _postFocusNode,),
-
+                      child: TextFieldForPostWithDifferentBG(
+                        postController: _postController,
+                        postFocusNode: _postFocusNode,
+                      ),
                     ),
                   ),
             Gap(1.h),
-            numberOfLines < 4 && images!.isEmpty
+            numberOfLines < 5 || images!.isEmpty
                 ? SizedBox(
                     height: 6.h,
                     child: ListView(
@@ -586,8 +605,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   selectImageFromCamera() async {
-    XFile? file = await ImagePicker()
-        .pickImage(source: ImageSource.camera, imageQuality: 10);
+    XFile? file = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      imageQuality: 10,
+    );
     if (file != null) {
       return file.path;
     } else {
@@ -595,11 +616,3 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     }
   }
 }
-
-
-
-
-
-
-
-

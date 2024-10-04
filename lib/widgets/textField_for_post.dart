@@ -4,8 +4,9 @@ import 'package:sizer/sizer.dart';
 class TextFieldForPostWhiteBG extends StatelessWidget {
   final TextEditingController postController;
   final FocusNode postFocusNode;
-  
-  const TextFieldForPostWhiteBG({super.key, required this.postController, required this.postFocusNode});
+
+  const TextFieldForPostWhiteBG(
+      {super.key, required this.postController, required this.postFocusNode});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +16,7 @@ class TextFieldForPostWhiteBG extends StatelessWidget {
       focusNode: postFocusNode,
       decoration: InputDecoration(
         hintText: "What's on your mind?",
-        contentPadding:
-        EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
+        contentPadding: EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
         border: InputBorder.none,
         hintStyle: const TextStyle(
           fontWeight: FontWeight.bold,
@@ -30,22 +30,23 @@ class TextFieldForPostWhiteBG extends StatelessWidget {
   }
 }
 
-class TextFieldForPostWithBG extends StatelessWidget {
+class TextFieldForPostWithDifferentBG extends StatelessWidget {
   final TextEditingController postController;
   final FocusNode postFocusNode;
 
-  const TextFieldForPostWithBG({super.key, required this.postController, required this.postFocusNode});
+  const TextFieldForPostWithDifferentBG(
+      {super.key, required this.postController, required this.postFocusNode});
 
   @override
   Widget build(BuildContext context) {
-    return  TextField(
+    return TextField(
       autofocus: true,
       controller: postController,
       focusNode: postFocusNode,
+      cursorColor: Colors.white,
       decoration: InputDecoration(
         hintText: "What's on your mind?",
-        contentPadding:
-        EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
+        contentPadding: EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
         border: InputBorder.none,
         hintStyle: const TextStyle(
           height: 3,
@@ -54,17 +55,14 @@ class TextFieldForPostWithBG extends StatelessWidget {
           color: Colors.black54,
         ),
       ),
-      maxLines: 3,
+      maxLines: null,
       textAlignVertical: TextAlignVertical.center,
       textAlign: TextAlign.center,
       style: TextStyle(
-        fontSize:
-        16.sp,
+        fontSize: 16.sp,
         fontWeight: FontWeight.bold,
-        color: Colors.white
-        ,
+        color: Colors.white,
       ),
-
     );
   }
 }

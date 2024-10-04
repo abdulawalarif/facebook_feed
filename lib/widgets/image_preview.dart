@@ -10,16 +10,15 @@ class ImagePreview extends StatelessWidget {
   final double width;
   final double height;
   const ImagePreview({
-    Key? key,
+    super.key,
     this.imagePath = '',
     this.width = 100,
     this.height = 100,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-
       height: height,
       width: width,
       decoration: BoxDecoration(

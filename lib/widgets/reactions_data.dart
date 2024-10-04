@@ -21,17 +21,16 @@ final List<Reaction<String>> reactions = [
     previewIcon: Image.asset(
       'assets/images/happy.png',
     ),
-    icon:   Image.asset(
+    icon: Image.asset(
       'assets/images/happy.png',
     ),
   ),
-
   Reaction<String>(
     value: 'In love',
     previewIcon: Image.asset(
       'assets/images/in-love.png',
     ),
-    icon:   Image.asset(
+    icon: Image.asset(
       'assets/images/in-love.png',
     ),
   ),
@@ -40,7 +39,7 @@ final List<Reaction<String>> reactions = [
     previewIcon: Image.asset(
       'assets/images/sad.png',
     ),
-    icon:   Image.asset(
+    icon: Image.asset(
       'assets/images/sad.png',
     ),
   ),
@@ -49,7 +48,7 @@ final List<Reaction<String>> reactions = [
     previewIcon: Image.asset(
       'assets/images/surprised.png',
     ),
-    icon:   Image.asset(
+    icon: Image.asset(
       'assets/images/surprised.png',
     ),
   ),
@@ -58,12 +57,8 @@ final List<Reaction<String>> reactions = [
     previewIcon: Image.asset(
       'assets/images/mad.png',
     ),
-    icon:  Image.asset(
+    icon: Image.asset(
       'assets/images/mad.png',
     ),
   ),
 ];
-
-
-
-

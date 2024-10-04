@@ -50,10 +50,11 @@ class Routes {
         final int index = arguments['index'] as int;
 
         return MaterialPageRoute(
-            builder: (BuildContext context) => UpdatePostScreen(
-                  postModel: postModel,
-                  index: index,
-                ));
+          builder: (BuildContext context) => UpdatePostScreen(
+            postModel: postModel,
+            index: index,
+          ),
+        );
 
       case RoutesName.comments:
         final Map<String, dynamic> arguments =
@@ -62,19 +63,22 @@ class Routes {
         final int index = arguments['index'] as int;
 
         return MaterialPageRoute(
-            builder: (BuildContext context) => Comments(
-                  postModel: postModel,
-                  index: index,
-                ));
+          builder: (BuildContext context) => Comments(
+            postModel: postModel,
+            index: index,
+          ),
+        );
 
       default:
-        return MaterialPageRoute(builder: (_) {
-          return const Scaffold(
-            body: Center(
-              child: Text('No route defined'),
-            ),
-          );
-        });
+        return MaterialPageRoute(
+          builder: (_) {
+            return const Scaffold(
+              body: Center(
+                child: Text('No route defined'),
+              ),
+            );
+          },
+        );
     }
   }
 }

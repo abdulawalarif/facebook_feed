@@ -1,68 +1,64 @@
-
 import 'package:flutter/material.dart';
 
-enum _selectedOptionForAPostLikesType {
-  Like,
-  Heart,
-  Care,
-  Haha,
-  Woow,
-  Sad,
-  Angry,
+enum SelectedOptionForAPostLikesType {
+  like,
+  heart,
+  care,
+  haha,
+  wow,
+  sad,
+  angry,
 }
-
 
 class PopUp extends StatelessWidget {
   const PopUp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<_selectedOptionForAPostLikesType>(
+    return PopupMenuButton<SelectedOptionForAPostLikesType>(
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      icon: Icon(Icons.more_horiz),
+        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+      ),
+      icon: const Icon(Icons.more_horiz),
       itemBuilder: (BuildContext context) => [
         const PopupMenuItem(
-          child: Text("Like"),
-          value: _selectedOptionForAPostLikesType.Like,
+          value: SelectedOptionForAPostLikesType.like,
+          child: Text('Like'),
         ),
         const PopupMenuItem(
-          child: Text("Heart"),
-          value: _selectedOptionForAPostLikesType.Heart,
-        ),  const PopupMenuItem(
-          child: Text("Care"),
-          value: _selectedOptionForAPostLikesType.Care,
-        ),  const PopupMenuItem(
-          child: Text("Haha"),
-          value: _selectedOptionForAPostLikesType.Haha,
-        ),  const PopupMenuItem(
-          child: Text("Wow"),
-          value: _selectedOptionForAPostLikesType.Woow,
-        ),  const PopupMenuItem(
-          child: Text("Sad"),
-          value: _selectedOptionForAPostLikesType.Sad,
-        ), const PopupMenuItem(
-          child: Text("Angry"),
-          value: _selectedOptionForAPostLikesType.Angry,
+          value: SelectedOptionForAPostLikesType.heart,
+          child: Text('Heart'),
+        ),
+        const PopupMenuItem(
+          value: SelectedOptionForAPostLikesType.care,
+          child: Text('Care'),
+        ),
+        const PopupMenuItem(
+          value: SelectedOptionForAPostLikesType.haha,
+          child: Text('Haha'),
+        ),
+        const PopupMenuItem(
+          value: SelectedOptionForAPostLikesType.wow,
+          child: Text('Wow'),
+        ),
+        const PopupMenuItem(
+          value: SelectedOptionForAPostLikesType.sad,
+          child: Text('Sad'),
+        ),
+        const PopupMenuItem(
+          value: SelectedOptionForAPostLikesType.angry,
+          child: Text('Angry'),
         ),
       ],
       onSelected: (value) {
-
         switch (value) {
-          case  _selectedOptionForAPostLikesType.Like:
-            print("like is pressed");
-          case  _selectedOptionForAPostLikesType.Heart:
-            print("like is pressed");
-            case  _selectedOptionForAPostLikesType.Care:
-            print("Care is pressed");
-            case  _selectedOptionForAPostLikesType.Haha:
-            print("Haha is pressed");
-            case  _selectedOptionForAPostLikesType.Woow:
-            print("Woow is pressed");
-            case  _selectedOptionForAPostLikesType.Sad:
-            print("Sad is pressed");
-            case  _selectedOptionForAPostLikesType.Angry:
-            print("Angry is pressed");
+          case SelectedOptionForAPostLikesType.like:
+          case SelectedOptionForAPostLikesType.heart:
+          case SelectedOptionForAPostLikesType.care:
+          case SelectedOptionForAPostLikesType.haha:
+          case SelectedOptionForAPostLikesType.wow:
+          case SelectedOptionForAPostLikesType.sad:
+          case SelectedOptionForAPostLikesType.angry:
         }
       },
     );
