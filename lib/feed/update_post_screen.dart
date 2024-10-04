@@ -7,6 +7,10 @@ import 'package:facebook_feed/models/post_model.dart';
 import 'package:facebook_feed/providers/post_provider.dart';
 import 'package:facebook_feed/widgets/image_preview.dart';
 
+import '../widgets/image_picker.dart';
+import '../widgets/profile_and_name.dart';
+import '../widgets/textField_for_post.dart';
+
 class UpdatePostScreen extends StatefulWidget {
   PostModel postModel;
   final int index;
@@ -19,6 +23,8 @@ class UpdatePostScreen extends StatefulWidget {
 class _UpdatePostScreenState extends State<UpdatePostScreen> {
   Color currentColor = Colors.white;
   late TextEditingController _postController;
+  late FocusNode _postFocusNode;
+
   int numberOfLines = 1;
   String bgImagePath = '';
   bool imageSelectedAsBackground = false;
@@ -27,6 +33,8 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
   void initState() {
     super.initState();
     _postController = TextEditingController();
+    _postFocusNode = FocusNode();
+
     currentColor = widget.postModel.color!;
     _postController.text = widget.postModel.posts!;
     bgImagePath = widget.postModel.selectedBgAsImage ?? "";
@@ -34,7 +42,32 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
         widget.postModel.selectedBgAsImage!.isEmpty ? false : true;
 
     images = widget.postModel.images;
+    _postController.addListener(_updateLineCount);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _postFocusNode.requestFocus();
+    });
+
   }
+  void _updateLineCount() {
+    final text = _postController.text;
+    final lines = text.split('\n').length;
+    setState(() {
+      numberOfLines = lines;
+      if (numberOfLines > 4) {
+        currentColor = Colors.white;
+        imageSelectedAsBackground = false;
+        bgImagePath = '';
+      }
+    });
+  }
+  @override
+  void dispose() {
+    _postController.removeListener(_updateLineCount);
+    _postController.dispose();
+    _postFocusNode.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,15 +99,15 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   setState(() {
                     posts.updatePost(
-                        widget.index,
-                        PostModel(
-                            posts: _postController.text,
-                            color:
-                                images!.isEmpty ? currentColor : Colors.white,
-                            selectedBgAsImage: bgImagePath,
-                            images: images,
-                            comments: widget.postModel.comments,
-                        ),);
+                      widget.index,
+                      PostModel(
+                        posts: _postController.text,
+                        color: images!.isEmpty ? currentColor : Colors.white,
+                        selectedBgAsImage: bgImagePath,
+                        images: images,
+                        comments: widget.postModel.comments,
+                      ),
+                    );
                   });
                   Navigator.of(context).pop();
                 }
@@ -105,324 +138,286 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
             ),
           ],
         ),
-        body: ListView(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          // mainAxisSize: MainAxisSize.min,
+        body:  ListView(
           children: [
             Gap(1.h),
-            Row(
-              children: [
-                Gap(2.w),
-                ClipOval(
-                  child: Image.asset(
-                    'assets/images/avatar.jpg',
-                    width: 9.w,
-                    height: 4.h,
-                    fit: BoxFit.cover, // Adjust the fit as needed
-                  ),
-                ),
-                Gap(2.w),
-                const Text(
-                  'Tom Hardy',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )
-              ],
-            ),
+            const ProfileAndName(),
             Gap(1.h),
             currentColor == Colors.white
-                ? Flexible(
-                    child: TextField(
-                      autofocus: true,
-                      controller: _postController,
-                      decoration: InputDecoration(
-                        hintText: "What's on your mind?",
-                        contentPadding:
-                            EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
-                        border: InputBorder.none,
-                        hintStyle: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black54),
-                      ),
-                      maxLines: null,
-                      textAlignVertical: TextAlignVertical.center,
-                      textAlign: TextAlign.left,
-                      onChanged: (val) {
-                        final lines = val.split('\n');
-                        numberOfLines = lines.length;
+                ? TextFieldForPostWhiteBG(
+              postController: _postController,
+              postFocusNode: _postFocusNode,
+            )
+                : Container(
+              height: 30.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: currentColor,
+                image: imageSelectedAsBackground
+                    ? DecorationImage(
+                  image: AssetImage(bgImagePath),
+                  fit: BoxFit.cover,
+                )
+                    : null,
+              ),
+              child: Center(
+                child: TextFieldForPostWithDifferentBG(
+                  postController: _postController,
+                  postFocusNode: _postFocusNode,
+                ),
+              ),
+            ),
+            Gap(1.h),
+            numberOfLines > 5 || images!.isNotEmpty
+                ? const SizedBox()
+                : SizedBox(
+              height: 6.h,
+              child: ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(2.w),
+                    child: GestureDetector(
+                      onTap: () {
                         setState(() {
-                          numberOfLines = lines.length;
+                          currentColor = Colors.white;
+                          imageSelectedAsBackground = false;
+                          bgImagePath = '';
                         });
                       },
-                    ),
-                  )
-                : Container(
-                    height: 30.h,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: currentColor,
-                      image: imageSelectedAsBackground
-                          ? DecorationImage(
-                              image: AssetImage(bgImagePath),
-                              fit: BoxFit.cover,
-                            )
-                          : null,
-                    ),
-                    child: TextField(
-                      autofocus: true,
-                      controller: _postController,
-                      decoration: InputDecoration(
-                        hintText: "What's on your mind?",
-                        contentPadding:
-                            EdgeInsets.only(left: 5.w, top: 4.h, bottom: 4.h),
-                        border: InputBorder.none,
-                        hintStyle: const TextStyle(
-                            height: 3,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black54),
+                      child: Container(
+                        height: 3.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black12),
+                          color: Colors.white10,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
-                      maxLines: 3,
-                      textAlignVertical: TextAlignVertical.center,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        // Set the font size for the input text
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      onChanged: (val) {
-                        final lines = val.split('\n');
-                        numberOfLines = lines.length;
-                        if (numberOfLines > 3) {
-                          setState(() {
-                            currentColor = Colors.white;
-                            bgImagePath = '';
-                          });
-                        }
-                      },
                     ),
                   ),
-            Gap(1.h),
-            numberOfLines < 4
-                ? SizedBox(
-                    height: 6.h,
-                    child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        ///ba img 1
-                        Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                currentColor = Colors.black;
-                                imageSelectedAsBackground = true;
-                                bgImagePath = 'assets/images/bg_image2.jpg';
-                              });
-                            },
-                            child: Container(
-                              height: 3.h,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(10),
-                                image: const DecorationImage(
-                                  image:
-                                      AssetImage('assets/images/bg_image2.jpg'),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
+                  Padding(
+                    padding: EdgeInsets.all(2.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentColor = Colors.black;
+                          imageSelectedAsBackground = true;
+                          bgImagePath = 'assets/images/bg_image2.jpg';
+                        });
+                      },
+                      child: Container(
+                        height: 3.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10),
+                          image: const DecorationImage(
+                            image:
+                            AssetImage('assets/images/bg_image2.jpg'),
+                            fit: BoxFit.cover,
                           ),
                         ),
-
-                        ///ba img 2
-                        Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                currentColor = Colors.black;
-                                imageSelectedAsBackground = true;
-                                bgImagePath = 'assets/images/img5.jpg';
-                              });
-                            },
-                            child: Container(
-                              height: 3.h,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(10),
-                                image:const DecorationImage(
-                                  image: AssetImage('assets/images/img5.jpg'),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        ///ba img 3
-                        Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                currentColor = Colors.black;
-                                imageSelectedAsBackground = true;
-                                bgImagePath = 'assets/images/bg_image1.jpg';
-                              });
-                            },
-                            child: Container(
-                              height: 3.h,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(10),
-                                image: const DecorationImage(
-                                  image:
-                                      AssetImage('assets/images/bg_image1.jpg'),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                currentColor = Colors.red;
-                                imageSelectedAsBackground = false;
-                                bgImagePath = '';
-                              });
-                            },
-                            child: Container(
-                              height: 3.h,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                currentColor = Colors.green;
-                                imageSelectedAsBackground = false;
-                                bgImagePath = '';
-                              });
-                            },
-                            child: Container(
-                              height: 3.h,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                currentColor = Colors.blueAccent;
-                                imageSelectedAsBackground = false;
-                                bgImagePath = '';
-                              });
-                            },
-                            child: Container(
-                              height: 3.h,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.blueAccent,
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                currentColor = Colors.black;
-                                imageSelectedAsBackground = false;
-                                bgImagePath = '';
-                              });
-                            },
-                            child: Container(
-                              height: 3.h,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                currentColor = Colors.teal;
-                                imageSelectedAsBackground = false;
-                                bgImagePath = '';
-                              });
-                            },
-                            child: Container(
-                              height: 3.h,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.teal,
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                currentColor = Colors.pink;
-                                imageSelectedAsBackground = false;
-                                bgImagePath = '';
-                              });
-                            },
-                            child: Container(
-                              height: 3.h,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.pink,
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                currentColor = Colors.purple;
-                                imageSelectedAsBackground = false;
-                                bgImagePath = '';
-                              });
-                            },
-                            child: Container(
-                              height: 3.h,
-                              width: 10.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.purple,
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  )
-                : const SizedBox(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentColor = Colors.black;
+                          imageSelectedAsBackground = true;
+                          bgImagePath = 'assets/images/img5.jpg';
+                        });
+                      },
+                      child: Container(
+                        height: 3.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/images/img5.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentColor = Colors.black;
+                          imageSelectedAsBackground = true;
+                          bgImagePath = 'assets/images/bg_image1.jpg';
+                        });
+                      },
+                      child: Container(
+                        height: 3.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10),
+                          image: const DecorationImage(
+                            image:
+                            AssetImage('assets/images/bg_image1.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentColor = Colors.red;
+                          imageSelectedAsBackground = false;
+                          bgImagePath = '';
+                        });
+                      },
+                      child: Container(
+                        height: 3.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentColor = Colors.green;
+                          imageSelectedAsBackground = false;
+                          bgImagePath = '';
+                        });
+                      },
+                      child: Container(
+                        height: 3.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentColor = Colors.blueAccent;
+                          imageSelectedAsBackground = false;
+                          bgImagePath = '';
+                        });
+                      },
+                      child: Container(
+                        height: 3.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentColor = Colors.black;
+                          imageSelectedAsBackground = false;
+                          bgImagePath = '';
+                        });
+                      },
+                      child: Container(
+                        height: 3.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentColor = Colors.teal;
+                          imageSelectedAsBackground = false;
+                          bgImagePath = '';
+                        });
+                      },
+                      child: Container(
+                        height: 3.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                          color: Colors.teal,
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentColor = Colors.pink;
+                          imageSelectedAsBackground = false;
+                          bgImagePath = '';
+                        });
+                      },
+                      child: Container(
+                        height: 3.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                          color: Colors.pink,
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.w),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentColor = Colors.purple;
+                          imageSelectedAsBackground = false;
+                          bgImagePath = '';
+                        });
+                      },
+                      child: Container(
+                        height: 3.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                          color: Colors.purple,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -453,13 +448,15 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                             height: 25,
                             width: 25,
                             decoration: BoxDecoration(
-                                color: Colors.black45,
-                                borderRadius: BorderRadius.circular(20)),
+                              color: Colors.black45,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                             child: const Center(
-                                child: Icon(
-                              Icons.close,
-                              color: Colors.white,
-                            )),
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -467,7 +464,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                   ),
                 );
               },
-            )
+            ),
           ],
         ),
         bottomSheet: SizedBox(
@@ -494,118 +491,117 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
     );
   }
 
-  Future selectImage() {
+  Future<void> selectImage() {
     return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)), //this right here
-            child: SizedBox(
-              height: 150,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Select Image From !',
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ), //this right here
+          child: SizedBox(
+            height: 25.h,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Select Image From !',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            String selectedImagePathProfile =
-                                await selectImageFromGallery();
-                            if (selectedImagePathProfile != '') {
-                              Navigator.pop(context);
-                              setState(() {
-                                images!.add(selectedImagePathProfile);
-                              });
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
+                  ),
+                  Gap(1.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          String selectedImagePathProfile =
+                              await ImagePickerClass.selectImageFromGallery();
+                          if (selectedImagePathProfile != '') {
+                            Navigator.pop(context);
+                            setState(() {
+                              images!.add(selectedImagePathProfile);
+                              if (images!.isNotEmpty) {
+                                currentColor = Colors.white;
+                              }
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
                                 content: Text('No Image Selected !'),
-                              ));
-                            }
-                          },
-                          child: Card(
-                              elevation: 5,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/gallery.png',
-                                      height: 60,
-                                      width: 60,
-                                    ),
-                                    const Text('Gallery'),
-                                  ],
+                              ),
+                            );
+                          }
+                        },
+                        child: Card(
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/images/gallery.png',
+                                  height: 60,
+                                  width: 60,
                                 ),
-                              )),
+                                const Text('Gallery'),
+                              ],
+                            ),
+                          ),
                         ),
-                        GestureDetector(
-                          onTap: () async {
-                            String selectedImagePathProfile =
-                                await selectImageFromCamera();
-                            if (selectedImagePathProfile != '') {
-                              Navigator.pop(context);
-                              setState(() {
-                                images!.add(selectedImagePathProfile);
-                              });
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
+                      ),
+                      Gap(5.w),
+                      GestureDetector(
+                        onTap: () async {
+                          String selectedImagePathProfile =
+                              await ImagePickerClass.selectImageFromCamera();
+                          if (selectedImagePathProfile != '') {
+                            Navigator.pop(context);
+                            setState(() {
+                              images!.add(selectedImagePathProfile);
+                              if (images!.isNotEmpty) {
+                                currentColor = Colors.white;
+                              }
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
                                 content: Text('No Image Captured !'),
-                              ));
-                            }
-                          },
-                          child: Card(
-                              elevation: 5,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/camera.png',
-                                      height: 60,
-                                      width: 60,
-                                    ),
-                                    const Text('Camera'),
-                                  ],
+                              ),
+                            );
+                          }
+                        },
+                        child: Card(
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/images/camera.png',
+                                  height: 60,
+                                  width: 60,
                                 ),
-                              )),
+                                const Text('Camera'),
+                              ],
+                            ),
+                          ),
                         ),
-                      ],
-                    )
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          );
-        });
-  }
-
-  selectImageFromGallery() async {
-    XFile? file = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 10);
-    if (file != null) {
-      return file.path;
-    } else {
-      return '';
-    }
-  }
-
-  selectImageFromCamera() async {
-    XFile? file = await ImagePicker()
-        .pickImage(source: ImageSource.camera, imageQuality: 10);
-    if (file != null) {
-      return file.path;
-    } else {
-      return '';
-    }
+          ),
+        );
+      },
+    );
   }
 }

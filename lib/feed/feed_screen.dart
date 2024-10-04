@@ -110,7 +110,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         ),
                       ],
                     )
-                  ],
+                  ,],
                 ),
               ),
             ],
@@ -133,12 +133,15 @@ class _FeedScreenState extends State<FeedScreen> {
                             fit: BoxFit.cover,
                           ),
                   ),
-                  child: Center(
-                    child: Text(
-                      post.posts!,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(14),
+                    child: Center(
+                      child: Text(
+                        post.posts!,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -179,7 +182,7 @@ class _FeedScreenState extends State<FeedScreen> {
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -189,7 +192,7 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 
   Widget usersInfFOrShowingPosts(
-      {required PostModel post, required int index}) {
+      {required PostModel post, required int index,}) {
     final posts = Provider.of<PostProvider>(context, listen: false);
     return Row(
       children: [
@@ -202,7 +205,7 @@ class _FeedScreenState extends State<FeedScreen> {
           children: [
             Text('Ronald',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black)),
+                    fontWeight: FontWeight.bold, color: Colors.black,),),
             Row(
               children: [Text('1h')],
             ),
@@ -211,7 +214,7 @@ class _FeedScreenState extends State<FeedScreen> {
         const Spacer(),
         PopupMenuButton<SelectedOptionForUpdateDelete>(
           shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+              borderRadius: BorderRadius.all(Radius.circular(15.0)),),
           icon: const Icon(Icons.more_horiz),
           itemBuilder: (BuildContext context) => [
             const PopupMenuItem(
@@ -231,13 +234,13 @@ class _FeedScreenState extends State<FeedScreen> {
                   'index': index,
                 };
                 Navigator.of(context).pushNamed(RoutesName.updatePostScreen,
-                    arguments: arguments);
+                    arguments: arguments,);
               case SelectedOptionForUpdateDelete.delete:
                 posts.removePost(index);
             }
           },
         )
-      ],
+      ,],
     );
   }
 
@@ -296,7 +299,7 @@ Widget likeCommentsWidgets() {
               const Text(
                 'Like',
                 style: TextStyle(color: Colors.black87),
-              )
+              ),
             ],
           ),
         ),

@@ -8,6 +8,7 @@ import 'package:sizer/sizer.dart';
 import 'package:facebook_feed/models/post_model.dart';
 import 'package:facebook_feed/widgets/image_preview.dart';
 import '../providers/post_provider.dart';
+import '../widgets/image_picker.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -57,7 +58,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     });
   }
 
-  bool isActive = false;
 
   @override
   Widget build(BuildContext context) {
@@ -157,8 +157,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                   ),
             Gap(1.h),
-            numberOfLines < 5 || images!.isEmpty
-                ? SizedBox(
+            numberOfLines > 5 || images!.isNotEmpty
+                ? const SizedBox()
+                : SizedBox(
                     height: 6.h,
                     child: ListView(
                       shrinkWrap: true,
@@ -405,8 +406,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         ),
                       ],
                     ),
-                  )
-                : const SizedBox(),
+                  ),
             GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -480,7 +480,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
   }
 
-  selectImage() {
+  Future<void> selectImage() {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -511,7 +511,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       GestureDetector(
                         onTap: () async {
                           String selectedImagePathProfile =
-                              await selectImageFromGallery();
+                              await ImagePickerClass.selectImageFromGallery();
                           if (selectedImagePathProfile != '') {
                             Navigator.pop(context);
                             setState(() {
@@ -549,7 +549,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       GestureDetector(
                         onTap: () async {
                           String selectedImagePathProfile =
-                              await selectImageFromCamera();
+                              await ImagePickerClass.selectImageFromCamera();
                           if (selectedImagePathProfile != '') {
                             Navigator.pop(context);
                             setState(() {
@@ -592,27 +592,5 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         );
       },
     );
-  }
-
-  selectImageFromGallery() async {
-    XFile? file = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 10);
-    if (file != null) {
-      return file.path;
-    } else {
-      return '';
-    }
-  }
-
-  selectImageFromCamera() async {
-    XFile? file = await ImagePicker().pickImage(
-      source: ImageSource.camera,
-      imageQuality: 10,
-    );
-    if (file != null) {
-      return file.path;
-    } else {
-      return '';
-    }
   }
 }
