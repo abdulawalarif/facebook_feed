@@ -50,7 +50,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     final lines = text.split('\n').length;
     setState(() {
       numberOfLines = lines;
-      if (numberOfLines > 4) {
+      if (numberOfLines > 5) {
         currentColor = Colors.white;
         imageSelectedAsBackground = false;
         bgImagePath = '';
