@@ -58,7 +58,7 @@ class TextFieldForPostWithDifferentBG extends StatelessWidget {
       cursorColor: Colors.white,
       inputFormatters: [CapitalizeFirstLetterInputFormatter()],
       decoration: InputDecoration(
-        hintText: "What's on your mind?",
+        hintText: "What's on your mind ?!",
         contentPadding: EdgeInsets.only(
           left: 5.w,
           top: 4.h,
@@ -91,6 +91,7 @@ class CapitalizeFirstLetterInputFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     String text = newValue.text;
+    TextSelection newSelection = newValue.selection;
 
     if (text.isEmpty) {
       return newValue;
@@ -98,15 +99,22 @@ class CapitalizeFirstLetterInputFormatter extends TextInputFormatter {
 
     StringBuffer buffer = StringBuffer();
     bool capitalizeNext = true;
+    int selectionIndex = newSelection.end;
 
     for (int i = 0; i < text.length; i++) {
       String currentChar = text[i];
 
       if (capitalizeNext && currentChar != ' ') {
         buffer.write(currentChar.toUpperCase());
+        if (i == selectionIndex - 1) {
+          selectionIndex = buffer.length;
+        }
         capitalizeNext = false;
       } else {
         buffer.write(currentChar);
+        if (i == selectionIndex - 1) {
+          selectionIndex = buffer.length;
+        }
       }
 
       if (currentChar == '.' || currentChar == '?' || currentChar == '!') {
@@ -114,9 +122,9 @@ class CapitalizeFirstLetterInputFormatter extends TextInputFormatter {
       }
     }
 
-    return newValue.copyWith(
+    return TextEditingValue(
       text: buffer.toString(),
-      selection: TextSelection.collapsed(offset: buffer.length),
+      selection: TextSelection.collapsed(offset: selectionIndex),
     );
   }
 }

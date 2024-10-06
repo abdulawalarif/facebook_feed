@@ -1,3 +1,4 @@
+import 'package:facebook_feed/widgets/textField_for_post.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -76,6 +77,7 @@ class _CommentsState extends State<Comments> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: comment,
+                      inputFormatters: [CapitalizeFirstLetterInputFormatter()],
                       decoration: const InputDecoration(
                         hintText: 'Type your comment here',
                         border: InputBorder.none,

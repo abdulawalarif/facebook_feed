@@ -1,11 +1,10 @@
 # Flutter dart project for integrating Facebook news feed.
 
-## A fully functional Flutter UI project where I have implemented FB feed CRUD with comments.
+## AFlutter project where I have implemented Facebook feed UI CRUD with comments, reactions and so on.
 
 
-TODO will have to add a working gif of the project here..
 
-![alt text](<post data.png>)
+![Login and reaction](<one.gif>) 
 
 This project is for integrating Facebook feed Graph API into your applications.  This codebase is only for the UI, and there is no backend integration. The features are the following:
 
@@ -48,7 +47,7 @@ Connect a physical device or start a virtual device on your machine
 It's a good starter boilerplate, For Facebook feed integration into your applications. Change the emoji according to the latest Facebook guidelines.
 Interact with the provider for sending posts to the server and fetching them from the servers.
 
-## Find a bug?
+## Found a bug?
 
 If you found an issue or would like to submit an improvement to this project,
 please submit an issue using the issues tab above. If you would like to submit a PR with a fix, reference the issue you created!
