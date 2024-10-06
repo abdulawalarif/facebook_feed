@@ -65,3 +65,9 @@ please submit an issue using the issues tab above. If you would like to submit a
 ## Author
 
 - [@abdulawalarif](https://github.com/abdulawalarif)
+  
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+
