@@ -54,6 +54,7 @@ please submit an issue using the issues tab above. If you would like to submit a
 
 
 ## Known issues (Work in progress)
+*  Lazy loading the feed for UI and network data for preventing possible UI Freezing
 *  Single image preview.
 *  Reaction implementation with each post with keys.
 *  Comment on children based on the parent's comments.
