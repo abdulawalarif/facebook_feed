@@ -4,7 +4,8 @@
 
 
 
-![Login and reaction](<one.gif>) 
+
+ <img src="demo/demo.gif" width="20%" alt="Demo of this application" />
 
 This project is to integrate Facebook feed Graph API into your applications.  This codebase is only for the UI, and there is no backend integration. The features are the following:
 
